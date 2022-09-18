@@ -2,26 +2,26 @@
 #qpy:console
 
 #import modules
-import os
+import os, time
 
-#prints a numbered list
+#function to print a numbered list
 def pl (todo):
     for i in todo:
         print(str(todo.index(i)) + ": " + todo[todo.index(i)])
     with open("todo.txt","w") as f:
         f.write("\n".join(todo))
 
-#delete item from list
+#fiction to delete item from list
 def del_it(todo):
     todo.pop(int(choice))
 
-#adds item to list, if blank fills in blank
+#function to adds item to list, removes blank from list.
 def add_it(todo):
     todo.append(choice)
     if "blank" in todo:
         todo.pop(0)
 
-#checks for text file, and create it off not found.
+#checks for text file, and create it if not found.
 def check_file(list):
     try:
         open(list, "r")
@@ -30,7 +30,7 @@ def check_file(list):
 
 check_file("todo.txt")
 
-#stores text file as list
+#makes list from text file.
 with open("todo.txt") as f:
     todo = f.read().splitlines()
 
@@ -38,7 +38,7 @@ with open("todo.txt") as f:
 while True:
     #clears screen
     os.system("clear")
-    #fills in blank list
+    #if list is empty, fills in blank.
     if len(todo) == 0:
         todo.append("blank")
         continue  
@@ -53,8 +53,9 @@ while True:
         exit()
   
     #for invalid choices
-    if choice == "" or choice in todo:
+    if not choice or choice in todo:
         print("invalid")
+        time.sleep(.5)
         continue
   
     #test for add or delete
