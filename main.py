@@ -1,96 +1,94 @@
 import os, time
 
-#add item to a list
-def add_to_list(choice0, choice1, dic):
-    if choice1 not in dic[choice0]:
-        dic[choice0].append(choice1)
-    if "blank" in dic[choice0]:
-        dic[choice0].pop(0)
-            
-#checks for keys in dictionaru, if none makes a blank one.
-def blank_dic(dic):
-    if not dic:
-        dic["blank"]=[]
-        return dic
-
-#checks for a blank list, if it is adds blank to list
-def blank_list(dic, choice):
-    if not dic[choice]:
-        dic[choice]= ["blank"]
-    return True
-
-#print out list with index
-def print_num_list1(dicto):
-    point= 0
-    os.system("clear")
-    for k in dicto:
-        print(str(point)+":"+k)
-        point+=1
-
-def print_num_list2(dic, choice):
-    point = 0
-    os.system ("clear")
-    print(choice)
-    for v in dic[choice]:
-        print (str(point)+":"+str(v))
-        point+=1
-
-#if the input is blank
-def empty_choice(choice):
-    if not choice:
-        print("Not a valid choice.")
-        time. sleep(.5)
-        return True
-
-#adds key to list for dictionary
-def add_new_list(dic,choice):
-    dic[choice]=[]
-    print("Added!")
-    time.sleep(.5)
-    if "blank" in dic:
-        dicto.pop("blank")
-
-#delete a key from dictionary
-def delete_list(choice, dic):
-    if "delete" in choice:
-        d = input("Delete mode\nEnter list to delete.\n")
+class lists():
+    def __init__(self):
         try:
-            ya_sure = input(f"""Are you sure? 
-delete {d}
-'yes' or 'no'?""")
-            #if user enters 'yes'
-            if ya_sure.lower() in ("yes","y"):
-                dic.pop(d)
-                return True
-            #if user enters 'no'
-            else:
-                return True
-        #if choice isn't in list
-        except KeyError:
-            print("invalid")
+            self.dict = eval(open("todo.txt",).read())
+        except FileNotFoundError:
+            with open("todo.txt","w") as f:
+                f.write(str({"todo":[]}))
+                dict = eval(open("todo.txt").read())
+
+
+
+    def get_dict(self):
+        #with "todo.txt" as f:
+        self.dict = eval(open("todo.txt").read())
+        return dict
+
+    def print_lists(self):
+        point=0
+        os.system("clear")
+        for k in self.dict.keys():
+            print(str(point)+":"+k)
+            point+=1
+
+
+    def delete_list(self, choice):
+         d = input(delete_choice)
+         for k in list(self.dict):
+              if d.lower() == k.lower():
+                  self.dict.pop(d)
+                  break 
+         dd.save_dict()
+
+
+    def print_tasks(self, choice):
+        point = 0
+        os.system("clear")
+        for v in self.dict[choice]:
+            print(str(point) + ":" + str(v))
+            point += 1
+
+    def add_new_list(self, choice):
+        self.dict[choice]=[]
+        print("List added")
+        time.sleep(2)
+        if "blank" in self.dict:
+            dicto.pop("blank")
+        dd.save_dict()
+
+    def add_to_list(self, task, choice0):
+        self.task = task
+        if self.task not in self.dict[choice0]:
+            self.dict[choice0].append(self.task)
+        if "blank" in self.dict[choice0]:
+            self.dict[choice0].pop(0)
+        dd.save_dict()
+
+    def save_dict(self):
+        with open("todo.txt", "w") as f:
+            f.write(str(self.dict))
+
+    def blank_dict(self):
+        if not self.dict:
+            self.dict["Blank"]=[]
+            return dict
+
+    def empty_choice(self, choice):
+        if not choice:                 
+            print("Not a valid choice.")
+            time. sleep(.5)
             return True
 
-#delete a task from a list in dictionary
-def delete_task(choice0, choice1, dic):
-    point = 0
-    for v in dic[choice0]:
-        if int(choice1) == point:
-            dic[choice0].pop(point)
-            point+=1
-        else:
-            point+=1
+    def blank_list(self, choice):
+        if not self.dict[choice]:
+            self.dict[choice]= ["blank"]
 
-#go back from selected list
-def return_to_main(choice):
-    if choice == "b":
-        return True
+    def main_menu(self, choice):
+        if choice == "b":
+            return True
 
-#save dictionary to file
-def save_list(dic):
-    print("saved")
-    with open("todo.txt", "w") as f:
-        f.write(str(dic))
-    return True
+    def delete_item(self, choice0, choice1):
+        point = 0
+        for v in self.dict[choice0]:
+            if int(choice1) == point:
+                self.dict[choice0].pop(point)
+                point+=1
+            else:
+                point+=1
+        dd.save_dict()
+
 
 #input text 0
 main_choice = """\nEnter list name to select
@@ -102,59 +100,53 @@ list_choice = """\nEnter a task to add.
 Enter task number to delete task.
 Enter 'b' to go to main menu.\n"""
 
-
-#checks for'todo.txt' and make one of doesn't exist.
-def check_for_file():
-        try:
-            #checks for todo.txt
-            dicto = eval(open("todo.txt",).read())
-            return dicto
-        except FileNotFoundError:
-            #if file doesn't exist, makes todo.txt in same directory as program.
-            with open("todo.txt","w") as f:
-                f.write(str({"todo":[]}))
-            dicto = eval(open("todo.txt",).read())
-            return dicto
+#input text 2
+delete_choice = """Delete mode\nEnter list to delete.\n"""
 
 
-#stores file as variable.   
-dicto = check_for_file() 
-    
+dd=lists()
+
 #main loop
 def main():
+
   while True:
-    blank_dic(dicto)
-    save_list(dicto)    
+
+    dd.blank_dict()
+    dd.get_dict()
+
     #reset key to run second loop
-    pin1 = True    
-    print_num_list1(dicto)
+    pin1 = True
+    dd.print_lists()
     choice0 = input(main_choice).strip()
-    #start input checks    
-    if empty_choice(choice0):
+    #start input checks
+    if dd.empty_choice(choice0):
         continue
-    if delete_list(choice0, dicto):
-        continue   
+
+    if choice0.lower() == "delete": 
+        dd.delete_list(choice0)
+        continue
+        
     #start on inner list
     try:
         #start of second loop
-        while pin1:   
-            blank_list(dicto, choice0)
-            print_num_list2(dicto, choice0)        
+        while pin1:
+            dd.blank_list(choice0)
+            dd.print_tasks(choice0)
             choice1 = input(list_choice).strip()              
-            #start input checks  
-            if return_to_main(choice1):
+            #start input checks
+            if dd.main_menu(choice1):
                 pin1 = False
-                continue                       
+                continue
             try:
-                delete_task(choice0,choice1,dicto)            
+                dd.delete_item(choice0,choice1)            
             except ValueError:
-                if empty_choice(choice1):
-                    continue 
-                add_to_list(choice0, choice1, dicto)                             
-    
+                if dd.empty_choice(choice1):
+                    continue
+                dd.add_to_list(choice1,choice0)
+                dd.save_dict()
     except KeyError:
-        add_new_list(dicto,choice0)
-
+        dd.add_new_list(choice0)
+        dd.save_dict()
 
 if __name__ == "__main__":
     main()
